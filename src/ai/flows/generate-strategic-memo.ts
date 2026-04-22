@@ -53,17 +53,14 @@ Monetization Model: {{{monetizationModel}}}
 Network Effects: {{{networkEffects}}}
 Switching Costs: {{{switchingCosts}}}
 Multihoming Risk: {{{multihomingRisk}}}
-Disintermediation Risk: {{{disintermediationRisk}}}
+DisintermediationRisk: {{{disintermediationRisk}}}
 
 Calculated Scores:
 Platform Strength Score: {{{platformStrengthScore}}} / 100
 Ecosystem Risk Score: {{{ecosystemRiskScore}}} / 100
 Value Capture Risk Score: {{{valueCaptureRiskScore}}} / 100
 
-Based on this information, provide a strategic memo. The memo should be structured with the following sections: Executive Summary, Key Insights, Strategic Implications, and Recommendations.
-
-Your response MUST be a JSON object matching the following schema:
-{{jsonSchema OutputSchema}}`,
+Based on this information, provide a strategic memo. The memo should be structured with the following sections: Executive Summary, Key Insights, Strategic Implications, and Recommendations.`,
 });
 
 const generateStrategicMemoFlow = ai.defineFlow(
