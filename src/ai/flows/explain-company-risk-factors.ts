@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview This file implements a Genkit flow to generate AI-driven explanations
@@ -72,7 +73,7 @@ Platform Strength Score: {{{platformStrengthScore}}}/100
 Ecosystem Risk Score: {{{ecosystemRiskScore}}}/100
 Value Capture Risk Score: {{{valueCaptureRiskScore}}}/100
 
-Based on the above information, explain the score breakdowns and identify the most critical risk factors for {{companyName}}'s ecosystem. Your explanation should be clear, concise, and actionable, similar to a strategic memo.`,
+Based on the above information, explain the score breakdowns and identify the most critical risk factors for {{{companyName}}}'s ecosystem. Your explanation should be clear, concise, and actionable, similar to a strategic memo.`,
 });
 
 const explainCompanyRiskFactorsFlow = ai.defineFlow(

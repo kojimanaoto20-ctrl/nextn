@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A Genkit flow for generating a concise strategic memo based on company ecosystem analysis inputs and calculated scores.
@@ -32,10 +33,6 @@ const GenerateStrategicMemoOutputSchema = z.object({
   strategicMemo: z.string().describe('A concise strategic memo with key insights, implications, and recommendations.'),
 });
 export type GenerateStrategicMemoOutput = z.infer<typeof GenerateStrategicMemoOutputSchema>;
-
-export async function generateStrategicMemo(input: GenerateStrategicMemoInput): Promise<GenerateStrategicMemoOutput> {
-  return generateStrategicMemoFlow(input);
-}
 
 const strategicMemoPrompt = ai.definePrompt({
   name: 'strategicMemoPrompt',
@@ -74,3 +71,7 @@ const generateStrategicMemoFlow = ai.defineFlow(
     return output!;
   }
 );
+
+export async function generateStrategicMemo(input: GenerateStrategicMemoInput): Promise<GenerateStrategicMemoOutput> {
+  return generateStrategicMemoFlow(input);
+}
