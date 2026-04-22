@@ -1,6 +1,7 @@
+
 "use client"
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnalysisResult } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -29,6 +30,12 @@ interface ScoreDashboardProps {
 }
 
 export function ScoreDashboard({ result, memo }: ScoreDashboardProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const radarData = [
     { subject: 'Platform Strength', A: result.scores.platformStrength, fullMark: 100 },
     { subject: 'Ecosystem Risk', A: result.scores.ecosystemRisk, fullMark: 100 },
@@ -52,7 +59,6 @@ export function ScoreDashboard({ result, memo }: ScoreDashboardProps) {
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {/* Main Score Cards */}
           <ScoreCard 
             title="Platform Strength" 
             value={result.scores.platformStrength} 
@@ -78,7 +84,6 @@ export function ScoreDashboard({ result, memo }: ScoreDashboardProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Radar Chart */}
         <Card className="lg:col-span-1 shadow-md border-primary/5">
           <CardHeader>
             <CardTitle className="text-lg font-headline flex items-center gap-2">
@@ -87,24 +92,29 @@ export function ScoreDashboard({ result, memo }: ScoreDashboardProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="h-[350px] flex items-center justify-center p-0">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
-                <PolarGrid stroke="#e2e8f0" />
-                <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 12 }} />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                <Radar
-                  name={result.companyName}
-                  dataKey="A"
-                  stroke="hsl(var(--primary))"
-                  fill="hsl(var(--primary))"
-                  fillOpacity={0.6}
-                />
-              </RadarChart>
-            </ResponsiveContainer>
+            {mounted ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+                  <PolarGrid stroke="#e2e8f0" />
+                  <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 12 }} />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                  <Radar
+                    name={result.companyName}
+                    dataKey="A"
+                    stroke="hsl(var(--primary))"
+                    fill="hsl(var(--primary))"
+                    fillOpacity={0.6}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-full w-full bg-muted/20 animate-pulse rounded-lg flex items-center justify-center">
+                <p className="text-xs text-muted-foreground italic">Loading radar chart...</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
-        {/* Detailed Breakdown */}
         <Card className="lg:col-span-2 shadow-md border-primary/5">
           <CardHeader>
             <CardTitle className="text-lg font-headline flex items-center gap-2">
@@ -140,7 +150,6 @@ export function ScoreDashboard({ result, memo }: ScoreDashboardProps) {
         </Card>
       </div>
 
-      {/* Strategic Memo Section */}
       <StrategicMemo memo={memo} companyName={result.companyName} />
     </div>
   );
