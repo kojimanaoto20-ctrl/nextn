@@ -1,10 +1,9 @@
 
 "use client"
 
-import React, { useState, useEffect } from 'react';
-import { AnalysisResult } from '@/lib/types';
+import React from 'react';
+import { AnalysisResult, RatingLevel } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { 
   ShieldAlert, 
@@ -12,167 +11,105 @@ import {
   Target, 
   Zap, 
   ArrowUpRight,
-  Info
+  ShieldCheck,
+  Network
 } from 'lucide-react';
-import {
-  Radar,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  ResponsiveContainer,
-} from 'recharts';
 import { StrategicMemo } from './StrategicMemo';
 
 interface ScoreDashboardProps {
   result: AnalysisResult;
-  memo: string;
 }
 
-export function ScoreDashboard({ result, memo }: ScoreDashboardProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const radarData = [
-    { subject: 'Platform Strength', A: result.scores.platformStrength, fullMark: 100 },
-    { subject: 'Ecosystem Risk', A: result.scores.ecosystemRisk, fullMark: 100 },
-    { subject: 'Value Capture', A: result.scores.valueCaptureRisk, fullMark: 100 },
-    { subject: 'Net Effects', A: result.scoreBreakdowns.find(b => b.label === 'Network Effects')?.score || 0, fullMark: 100 },
-    { subject: 'Switching Costs', A: result.scoreBreakdowns.find(b => b.label === 'Switching Costs')?.score || 0, fullMark: 100 },
-  ];
-
-  const getScoreColor = (score: number, inverse = false) => {
-    if (inverse) {
-      if (score < 40) return 'text-emerald-600';
-      if (score < 70) return 'text-amber-600';
-      return 'text-rose-600';
+export function ScoreDashboard({ result }: ScoreDashboardProps) {
+  const getRatingVariant = (level: RatingLevel) => {
+    switch (level) {
+      case 'High': return 'default';
+      case 'Middle': return 'secondary';
+      case 'Low': return 'outline';
+      default: return 'outline';
     }
-    if (score > 75) return 'text-emerald-600';
-    if (score > 50) return 'text-amber-600';
-    return 'text-rose-600';
+  };
+
+  const getRatingColor = (level: RatingLevel, inverse = false) => {
+    if (inverse) {
+      if (level === 'Low') return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+      if (level === 'Middle') return 'bg-amber-100 text-amber-700 border-amber-200';
+      return 'bg-rose-100 text-rose-700 border-rose-200';
+    }
+    if (level === 'High') return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+    if (level === 'Middle') return 'bg-amber-100 text-amber-700 border-amber-200';
+    return 'bg-rose-100 text-rose-700 border-rose-200';
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <ScoreCard 
-            title="Platform Strength" 
-            value={result.scores.platformStrength} 
-            icon={<TrendingUp className="h-5 w-5" />}
-            description="Overall resilience and power of the platform model."
-            colorClass={getScoreColor(result.scores.platformStrength)}
-          />
-          <ScoreCard 
-            title="Ecosystem Risk" 
-            value={result.scores.ecosystemRisk} 
-            icon={<ShieldAlert className="h-5 w-5" />}
-            description="Exposure to external threats within the ecosystem."
-            colorClass={getScoreColor(result.scores.ecosystemRisk, true)}
-          />
-          <ScoreCard 
-            title="Value Capture Risk" 
-            value={result.scores.valueCaptureRisk} 
-            icon={<Target className="h-5 w-5" />}
-            description="Risk of inability to monetize the value created."
-            colorClass={getScoreColor(result.scores.valueCaptureRisk, true)}
-          />
-        </div>
+    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <RatingCard 
+          title="Platform Strength" 
+          level={result.ratings.platformStrength.level}
+          explanation={result.ratings.platformStrength.explanation}
+          icon={<TrendingUp className="h-5 w-5" />}
+          colorClass={getRatingColor(result.ratings.platformStrength.level)}
+        />
+        <RatingCard 
+          title="Network Effects" 
+          level={result.ratings.networkEffects.level}
+          explanation={result.ratings.networkEffects.explanation}
+          icon={<Network className="h-5 w-5" />}
+          colorClass={getRatingColor(result.ratings.networkEffects.level)}
+        />
+        <RatingCard 
+          title="Switching Costs" 
+          level={result.ratings.switchingCosts.level}
+          explanation={result.ratings.switchingCosts.explanation}
+          icon={<ShieldCheck className="h-5 w-5" />}
+          colorClass={getRatingColor(result.ratings.switchingCosts.level)}
+        />
+        <RatingCard 
+          title="Multihoming Risk" 
+          level={result.ratings.multihomingRisk.level}
+          explanation={result.ratings.multihomingRisk.explanation}
+          icon={<ShieldAlert className="h-5 w-5" />}
+          colorClass={getRatingColor(result.ratings.multihomingRisk.level, true)}
+        />
+        <RatingCard 
+          title="Disintermediation" 
+          level={result.ratings.disintermediationRisk.level}
+          explanation={result.ratings.disintermediationRisk.explanation}
+          icon={<Target className="h-5 w-5" />}
+          colorClass={getRatingColor(result.ratings.disintermediationRisk.level, true)}
+        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <Card className="lg:col-span-1 shadow-md border-primary/5">
-          <CardHeader>
-            <CardTitle className="text-lg font-headline flex items-center gap-2">
-              <Zap className="h-5 w-5 text-accent" />
-              Ecosystem Radar
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[350px] flex items-center justify-center p-0">
-            {mounted ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
-                  <PolarGrid stroke="#e2e8f0" />
-                  <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 12 }} />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                  <Radar
-                    name={result.companyName}
-                    dataKey="A"
-                    stroke="hsl(var(--primary))"
-                    fill="hsl(var(--primary))"
-                    fillOpacity={0.6}
-                  />
-                </RadarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="h-full w-full bg-muted/20 animate-pulse rounded-lg flex items-center justify-center">
-                <p className="text-xs text-muted-foreground italic">Loading radar chart...</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="lg:col-span-2 shadow-md border-primary/5">
-          <CardHeader>
-            <CardTitle className="text-lg font-headline flex items-center gap-2">
-              <ArrowUpRight className="h-5 w-5 text-accent" />
-              Strategic Breakdown
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {result.scoreBreakdowns.map((item, idx) => (
-              <div key={idx} className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-sm">{item.label}</span>
-                    <Badge variant="secondary" className="text-[10px] uppercase font-bold tracking-wider">
-                      {item.category}
-                    </Badge>
-                  </div>
-                  <span className="text-sm font-semibold">{item.score}/100</span>
-                </div>
-                <Progress value={item.score} className="h-2" />
-                <p className="text-xs text-muted-foreground">{item.description}</p>
-              </div>
-            ))}
-            <div className="pt-4 mt-4 border-t border-dashed">
-              <div className="flex gap-4 items-start p-3 bg-muted/30 rounded-lg">
-                <Info className="h-4 w-4 mt-0.5 text-primary shrink-0" />
-                <p className="text-xs leading-relaxed italic">
-                  Scores are derived using the <strong>Columbia Strategy Framework</strong>, weighting network effects, switching costs, and multihoming risks based on platform architecture.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <StrategicMemo memo={memo} companyName={result.companyName} />
+      <StrategicMemo memo={result.strategicMemo} companyName={result.companyName} />
     </div>
   );
 }
 
-function ScoreCard({ title, value, icon, description, colorClass }: { 
+function RatingCard({ title, level, explanation, icon, colorClass }: { 
   title: string; 
-  value: number; 
+  level: RatingLevel; 
+  explanation: string;
   icon: React.ReactNode; 
-  description: string;
   colorClass: string;
 }) {
   return (
-    <Card className="relative overflow-hidden shadow-md border-primary/5 group">
-      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-        {icon}
-      </div>
-      <CardHeader className="pb-2">
-        <CardDescription className="text-xs font-semibold uppercase tracking-wider">{title}</CardDescription>
+    <Card className="relative overflow-hidden shadow-md border-primary/5 hover:border-primary/20 transition-all group flex flex-col h-full">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+        <CardDescription className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{title}</CardDescription>
+        <div className="p-2 bg-primary/5 rounded-lg text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+          {icon}
+        </div>
       </CardHeader>
-      <CardContent>
-        <div className={`text-4xl font-headline font-bold mb-1 ${colorClass}`}>{value}</div>
-        <p className="text-xs text-muted-foreground line-clamp-2">{description}</p>
+      <CardContent className="space-y-4 flex-grow">
+        <div className="flex items-center gap-2">
+          <Badge className={`${colorClass} font-bold px-3 py-1 rounded-md border text-xs`}>
+            {level} Rating
+          </Badge>
+        </div>
+        <p className="text-sm text-primary/80 leading-relaxed italic border-l-2 border-accent/20 pl-3">
+          {explanation}
+        </p>
       </CardContent>
     </Card>
   );

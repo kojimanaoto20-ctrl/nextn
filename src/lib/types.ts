@@ -1,35 +1,25 @@
+
+export type RatingLevel = 'Low' | 'Middle' | 'High';
+
+export interface RatingDetail {
+  level: RatingLevel;
+  explanation: string;
+}
+
 export interface CompanyAnalysisInput {
+  companyUrl: string;
+}
+
+export interface AnalysisResult {
   companyName: string;
+  companyUrl: string;
   industry: string;
-  businessModel: string;
-  coreTechnology: string;
-  complementors: string;
-  competitors: string;
-  monetizationModel: string;
-  networkEffects: string;
-  switchingCosts: string;
-  multihomingRisk: string;
-  disintermediationRisk: string;
-}
-
-export interface AnalysisScores {
-  platformStrength: number;
-  ecosystemRisk: number;
-  valueCaptureRisk: number;
-}
-
-export interface AnalysisResult extends CompanyAnalysisInput {
-  scores: AnalysisScores;
-  scoreBreakdowns: {
-    label: string;
-    score: number;
-    description: string;
-  }[];
-}
-
-export interface Framework {
-  id: string;
-  title: string;
-  description: string;
-  keyConcepts: string[];
+  ratings: {
+    networkEffects: RatingDetail;
+    switchingCosts: RatingDetail;
+    multihomingRisk: RatingDetail;
+    disintermediationRisk: RatingDetail;
+    platformStrength: RatingDetail;
+  };
+  strategicMemo: string;
 }

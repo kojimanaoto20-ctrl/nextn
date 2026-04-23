@@ -1,40 +1,27 @@
+
 "use client"
 
 import React, { useState } from 'react';
 import { CompanyForm } from '@/components/CompanyForm';
 import { ScoreDashboard } from '@/components/ScoreDashboard';
-import { CompanyAnalysisInput, AnalysisResult } from '@/lib/types';
-import { calculateScores } from '@/lib/scoring';
-import { generateStrategicMemo } from '@/ai/flows/generate-strategic-memo';
+import { AnalysisResult } from '@/lib/types';
+import { analyzeCompany } from '@/ai/flows/explain-company-risk-factors';
 import { BookOpen, Compass, ChevronRight, Activity, Globe } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
-  const [strategicMemo, setStrategicMemo] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleAnalysis = async (input: CompanyAnalysisInput) => {
+  const handleAnalysis = async (input: { companyUrl: string }) => {
     setIsLoading(true);
     try {
-      // 1. Calculate local scores
-      const { scores, breakdowns } = calculateScores(input);
-      const result: AnalysisResult = {
-        ...input,
-        scores,
-        scoreBreakdowns: breakdowns
-      };
+      const result = await analyzeCompany(input);
       
-      // 2. Generate strategic memo via AI
-      const memoResult = await generateStrategicMemo({
-        ...input,
-        platformStrengthScore: scores.platformStrength,
-        ecosystemRiskScore: scores.ecosystemRisk,
-        valueCaptureRiskScore: scores.valueCaptureRisk
+      setAnalysisResult({
+        ...result,
+        companyUrl: input.companyUrl
       });
-
-      setAnalysisResult(result);
-      setStrategicMemo(memoResult.strategicMemo);
       
       // Scroll to dashboard
       setTimeout(() => {
@@ -76,32 +63,32 @@ export default function Home() {
         <section className="relative text-center max-w-3xl mx-auto space-y-6 pt-10">
           <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest border border-accent/20">
             <Globe className="h-3 w-3" />
-            Advanced Platform Strategy Tools
+            URL-Driven AI Analysis
           </div>
           <h1 className="text-5xl md:text-6xl font-headline font-bold text-primary leading-tight">
             Analyze Risk in the <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Connected Economy</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Quantify platform strength, evaluate ecosystem risks, and generate strategic recommendations using Columbia Business School's world-class methodology.
+            Quantify platform strength and evaluate ecosystem risks using Columbia Business School's world-class methodology. Simply provide a URL.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-4">
             <div className="flex items-center gap-2 text-sm text-primary font-medium">
               <ChevronRight className="h-4 w-4 text-accent" />
-              Network Effects
+              Direct Analysis
             </div>
             <div className="flex items-center gap-2 text-sm text-primary font-medium">
               <ChevronRight className="h-4 w-4 text-accent" />
-              Winner-Take-All Dynamics
+              Qualitative Insights
             </div>
             <div className="flex items-center gap-2 text-sm text-primary font-medium">
               <ChevronRight className="h-4 w-4 text-accent" />
-              Multihoming Threat
+              Strategic Memos
             </div>
           </div>
         </section>
 
         {/* Input Form Section */}
-        <section className="max-w-4xl mx-auto">
+        <section className="max-w-3xl mx-auto">
           <CompanyForm onSubmit={handleAnalysis} isLoading={isLoading} />
         </section>
 
@@ -109,10 +96,10 @@ export default function Home() {
         {analysisResult && (
           <section id="analysis-results" className="pt-20 border-t border-primary/5 space-y-10">
             <div className="text-center space-y-2">
-              <h2 className="text-3xl font-headline text-primary">Executive Analysis: {analysisResult.companyName}</h2>
-              <p className="text-muted-foreground">Strategic dashboard and ecosystem risk breakdown.</p>
+              <h2 className="text-3xl font-headline text-primary">Strategic Assessment: {analysisResult.companyName}</h2>
+              <p className="text-muted-foreground">{analysisResult.industry} • {analysisResult.companyUrl}</p>
             </div>
-            <ScoreDashboard result={analysisResult} memo={strategicMemo} />
+            <ScoreDashboard result={analysisResult} />
           </section>
         )}
       </main>
@@ -125,10 +112,10 @@ export default function Home() {
              <span className="font-headline font-bold text-primary">Ecosystem Risk Analyzer</span>
           </div>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto">
-            This tool is designed for educational and strategic planning purposes, implementing the core frameworks from Columbia Business School's Technology Strategy curriculum.
+            This tool uses AI to simulate a strategic consultation based on Columbia Business School's Technology Strategy curriculum.
           </p>
           <div className="text-[10px] uppercase tracking-widest text-muted-foreground/60 pt-4">
-            &copy; {new Date().getFullYear()} Strategic Platforms Inc. • All Rights Reserved
+            &copy; {new Date().getFullYear()} Strategic Platforms Inc. • AI-Driven Analysis
           </div>
         </div>
       </footer>
