@@ -3,14 +3,15 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ArrowLeft, 
-  Layers, 
-  Network, 
-  RefreshCcw, 
-  Zap, 
-  ShieldCheck, 
-  Lightbulb, 
+import {
+  Activity,
+  ArrowRight,
+  Layers,
+  Network,
+  RefreshCcw,
+  Zap,
+  ShieldCheck,
+  Lightbulb,
   Puzzle,
   Briefcase
 } from 'lucide-react';
@@ -78,26 +79,32 @@ const FRAMEWORKS = [
 export default function FrameworkExplorer() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {/* Shared nav */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-primary/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-primary hover:text-accent transition-colors font-medium text-sm">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Analyzer
+          <Link href="/" className="flex items-center gap-2">
+            <div className="bg-primary p-1.5 rounded-lg shadow-inner">
+              <Activity className="h-6 w-6 text-white" />
+            </div>
+            <span className="font-headline font-bold text-xl tracking-tight text-primary">
+              Platform<span className="text-accent">Lens</span>
+            </span>
           </Link>
-          <span className="font-headline font-bold text-xl tracking-tight text-primary">Framework <span className="text-accent">Explorer</span></span>
-          <div className="w-20"></div> {/* Spacer */}
+          <div className="flex items-center gap-8">
+            <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Analyzer</Link>
+            <Link href="/frameworks" className="text-sm font-medium text-primary hover:text-accent transition-colors">Framework Explorer</Link>
+          </div>
         </div>
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
-        <section className="max-w-3xl space-y-6">
+        <section className="max-w-3xl space-y-4">
           <Badge className="bg-accent/10 text-accent hover:bg-accent/20 border-accent/20 uppercase tracking-widest px-3 py-1 text-[10px] font-bold">
-            Curriculum Reference
+            Reference
           </Badge>
-          <h1 className="text-5xl font-headline font-bold text-primary">Strategy Frameworks</h1>
+          <h1 className="text-5xl font-headline font-bold text-primary">Framework Explorer</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            These concepts form the analytical core of our Ecosystem Risk Analyzer. Based on the Technology Strategy course at Columbia Business School, they provide a rigorous way to think about digital business models.
+            These concepts form the analytical core of PlatformLens, drawn from graduate-level technology strategy curricula. Use them to interpret your analysis results.
           </p>
         </section>
 
@@ -111,7 +118,7 @@ export default function FrameworkExplorer() {
                 <div>
                   <div className="flex justify-between items-start mb-1">
                     <CardTitle className="text-lg font-headline">{f.title}</CardTitle>
-                    <Badge variant="outline" className="text-[9px] uppercase font-bold text-muted-foreground">
+                    <Badge variant="outline" className="text-[9px] uppercase font-bold text-muted-foreground ml-2 shrink-0">
                       {f.category}
                     </Badge>
                   </div>
@@ -134,13 +141,13 @@ export default function FrameworkExplorer() {
           <div className="relative z-10 max-w-2xl space-y-4">
             <h2 className="text-3xl font-headline font-bold">Ready to apply these?</h2>
             <p className="text-primary-foreground/80 leading-relaxed">
-              Use the Analyzer to see how these dynamics play out in real companies like Uber, LinkedIn, or your own business.
+              Use PlatformLens to see how these dynamics play out in real companies like Uber, LinkedIn, or your own business.
             </p>
             <div className="pt-6">
               <Link href="/">
                 <button className="bg-accent hover:bg-accent/90 text-white font-headline px-8 py-3 rounded-xl transition-all flex items-center gap-2 group shadow-lg">
                   Start New Analysis
-                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>
             </div>
@@ -148,24 +155,5 @@ export default function FrameworkExplorer() {
         </section>
       </main>
     </div>
-  );
-}
-
-function ChevronRight({ className }: { className?: string }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width="24" 
-      height="24" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <path d="m9 18 6-6-6-6"/>
-    </svg>
   );
 }

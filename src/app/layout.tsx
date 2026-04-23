@@ -2,8 +2,8 @@ import type {Metadata} from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Ecosystem Risk Analyzer',
-  description: 'Analyze company platform and technology strategy using advanced frameworks.',
+  title: 'PlatformLens',
+  description: 'Turn a single URL into a platform strategy analysis. Quantify network effects, switching costs, and ecosystem risks instantly.',
 };
 
 export default function RootLayout({

@@ -1,4 +1,4 @@
-export type RatingLevel = 'Low' | 'Middle' | 'High';
+export type RatingLevel = 'Low' | 'Medium' | 'High';
 
 export interface RatingDetail {
   level: RatingLevel;

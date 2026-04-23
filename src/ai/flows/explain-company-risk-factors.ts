@@ -9,7 +9,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-const RatingLevelSchema = z.enum(['Low', 'Middle', 'High']);
+const RatingLevelSchema = z.enum(['Low', 'Medium', 'High']);
 const RatingDetailSchema = z.object({
   level: RatingLevelSchema,
   explanation: z.string().describe('2-3 sentences explaining the specific rating for this company.'),
@@ -39,7 +39,7 @@ const analysisPrompt = ai.definePrompt({
   name: 'analyzeCompanyPrompt',
   input: {schema: AnalyzeCompanyInputSchema},
   output: {schema: AnalyzeCompanyOutputSchema},
-  prompt: `You are a world-class technology strategist and business analyst from Columbia Business School. 
+  prompt: `You are a world-class technology strategist and business analyst specializing in platform strategy.
 Analyze the company located at: {{{companyUrl}}}
 
 Using your extensive knowledge of this company and its industry ecosystem, perform a rigorous strategic assessment using our core frameworks.
@@ -52,6 +52,8 @@ Using your extensive knowledge of this company and its industry ecosystem, perfo
    - Disintermediation Risk (The risk of users bypassing the platform to transact directly)
    - Platform Strength (The overall resilience and defensive moat of the platform)
    - Value Capture Risk (The threat that the platform cannot monetize the value it creates)
+
+Important: Always output the company name in English (e.g. "Techtouch Inc." not "Techtouch株式会社"). Use Low, Medium, or High for all ratings.
 
 3. Conclude with a Strategic Memo:
    Provide an executive summary of the company's competitive position, highlighting the most critical risk and the biggest opportunity for platform growth.
