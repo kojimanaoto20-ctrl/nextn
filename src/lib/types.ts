@@ -1,4 +1,3 @@
-
 export type RatingLevel = 'Low' | 'Middle' | 'High';
 
 export interface RatingDetail {
@@ -20,6 +19,7 @@ export interface AnalysisResult {
     multihomingRisk: RatingDetail;
     disintermediationRisk: RatingDetail;
     platformStrength: RatingDetail;
+    valueCaptureRisk: RatingDetail;
   };
   strategicMemo: string;
 }

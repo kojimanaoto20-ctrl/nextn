@@ -1,4 +1,3 @@
-
 'use server';
 /**
  * @fileOverview This file implements a Genkit flow to perform a comprehensive 
@@ -13,7 +12,7 @@ import {z} from 'genkit';
 const RatingLevelSchema = z.enum(['Low', 'Middle', 'High']);
 const RatingDetailSchema = z.object({
   level: RatingLevelSchema,
-  explanation: z.string().describe('2-3 sentences explaining the rating.'),
+  explanation: z.string().describe('2-3 sentences explaining the specific rating for this company.'),
 });
 
 const AnalyzeCompanyInputSchema = z.object({
@@ -29,8 +28,9 @@ const AnalyzeCompanyOutputSchema = z.object({
     multihomingRisk: RatingDetailSchema,
     disintermediationRisk: RatingDetailSchema,
     platformStrength: RatingDetailSchema,
+    valueCaptureRisk: RatingDetailSchema,
   }),
-  strategicMemo: z.string().describe('A concise strategic memo with executive summary and recommendations.'),
+  strategicMemo: z.string().describe('A formal strategic memo (200-300 words) summarizing key insights and actionable recommendations.'),
 });
 
 export type AnalyzeCompanyOutput = z.infer<typeof AnalyzeCompanyOutputSchema>;
@@ -39,20 +39,24 @@ const analysisPrompt = ai.definePrompt({
   name: 'analyzeCompanyPrompt',
   input: {schema: AnalyzeCompanyInputSchema},
   output: {schema: AnalyzeCompanyOutputSchema},
-  prompt: `You are an expert business analyst from Columbia Business School. 
+  prompt: `You are a world-class technology strategist and business analyst from Columbia Business School. 
 Analyze the company located at: {{{companyUrl}}}
 
-Using your knowledge of this company and its industry, perform a strategic ecosystem assessment.
-1. Identify the company name and industry.
-2. For each of the following dimensions, provide a rating (Low, Middle, High) and a 2-3 sentence explanation of WHY:
-   - Network Effects (Direct/Indirect)
-   - Switching Costs
-   - Multihoming Risk
-   - Disintermediation Risk
-   - Platform Strength (Overall resilience)
-3. Provide a concise Strategic Memo summarizing the key insights and recommendations.
+Using your extensive knowledge of this company and its industry ecosystem, perform a rigorous strategic assessment using our core frameworks.
 
-Be rigorous and insightful, focusing on platform dynamics and technology strategy.`,
+1. Identify the official Company Name and Primary Industry.
+2. For each of the following 6 dimensions, provide a qualitative rating (Low, Middle, High) and a precise 2-3 sentence explanation of WHY that rating was assigned:
+   - Network Effects (The power of direct and indirect value growth as the user base expands)
+   - Switching Costs (The friction/cost for users to leave for a competitor)
+   - Multihoming Risk (The ease with which users can use rival platforms simultaneously)
+   - Disintermediation Risk (The risk of users bypassing the platform to transact directly)
+   - Platform Strength (The overall resilience and defensive moat of the platform)
+   - Value Capture Risk (The threat that the platform cannot monetize the value it creates)
+
+3. Conclude with a Strategic Memo:
+   Provide an executive summary of the company's competitive position, highlighting the most critical risk and the biggest opportunity for platform growth.
+
+Be insightful, analytical, and professional.`,
 });
 
 const analyzeCompanyFlow = ai.defineFlow(

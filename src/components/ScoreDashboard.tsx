@@ -1,18 +1,17 @@
-
 "use client"
 
 import React from 'react';
 import { AnalysisResult, RatingLevel } from '@/lib/types';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
   ShieldAlert, 
   TrendingUp, 
   Target, 
   Zap, 
-  ArrowUpRight,
   ShieldCheck,
-  Network
+  Network,
+  DollarSign
 } from 'lucide-react';
 import { StrategicMemo } from './StrategicMemo';
 
@@ -21,24 +20,30 @@ interface ScoreDashboardProps {
 }
 
 export function ScoreDashboard({ result }: ScoreDashboardProps) {
-  const getRatingVariant = (level: RatingLevel) => {
+  /**
+   * Positive Metrics: Network Effects, Switching Costs, Platform Strength
+   * High = Green, Middle = Yellow, Low = Red
+   */
+  const getPositiveColor = (level: RatingLevel) => {
     switch (level) {
-      case 'High': return 'default';
-      case 'Middle': return 'secondary';
-      case 'Low': return 'outline';
-      default: return 'outline';
+      case 'High': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+      case 'Middle': return 'bg-amber-100 text-amber-700 border-amber-200';
+      case 'Low': return 'bg-rose-100 text-rose-700 border-rose-200';
+      default: return 'bg-slate-100 text-slate-700 border-slate-200';
     }
   };
 
-  const getRatingColor = (level: RatingLevel, inverse = false) => {
-    if (inverse) {
-      if (level === 'Low') return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-      if (level === 'Middle') return 'bg-amber-100 text-amber-700 border-amber-200';
-      return 'bg-rose-100 text-rose-700 border-rose-200';
+  /**
+   * Risk Metrics: Multihoming Risk, Disintermediation Risk, Value Capture Risk
+   * High = Red, Middle = Yellow, Low = Green
+   */
+  const getRiskColor = (level: RatingLevel) => {
+    switch (level) {
+      case 'High': return 'bg-rose-100 text-rose-700 border-rose-200';
+      case 'Middle': return 'bg-amber-100 text-amber-700 border-amber-200';
+      case 'Low': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+      default: return 'bg-slate-100 text-slate-700 border-slate-200';
     }
-    if (level === 'High') return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-    if (level === 'Middle') return 'bg-amber-100 text-amber-700 border-amber-200';
-    return 'bg-rose-100 text-rose-700 border-rose-200';
   };
 
   return (
@@ -49,35 +54,42 @@ export function ScoreDashboard({ result }: ScoreDashboardProps) {
           level={result.ratings.platformStrength.level}
           explanation={result.ratings.platformStrength.explanation}
           icon={<TrendingUp className="h-5 w-5" />}
-          colorClass={getRatingColor(result.ratings.platformStrength.level)}
+          colorClass={getPositiveColor(result.ratings.platformStrength.level)}
         />
         <RatingCard 
           title="Network Effects" 
           level={result.ratings.networkEffects.level}
           explanation={result.ratings.networkEffects.explanation}
           icon={<Network className="h-5 w-5" />}
-          colorClass={getRatingColor(result.ratings.networkEffects.level)}
+          colorClass={getPositiveColor(result.ratings.networkEffects.level)}
         />
         <RatingCard 
           title="Switching Costs" 
           level={result.ratings.switchingCosts.level}
           explanation={result.ratings.switchingCosts.explanation}
           icon={<ShieldCheck className="h-5 w-5" />}
-          colorClass={getRatingColor(result.ratings.switchingCosts.level)}
+          colorClass={getPositiveColor(result.ratings.switchingCosts.level)}
         />
         <RatingCard 
           title="Multihoming Risk" 
           level={result.ratings.multihomingRisk.level}
           explanation={result.ratings.multihomingRisk.explanation}
           icon={<ShieldAlert className="h-5 w-5" />}
-          colorClass={getRatingColor(result.ratings.multihomingRisk.level, true)}
+          colorClass={getRiskColor(result.ratings.multihomingRisk.level)}
         />
         <RatingCard 
           title="Disintermediation" 
           level={result.ratings.disintermediationRisk.level}
           explanation={result.ratings.disintermediationRisk.explanation}
           icon={<Target className="h-5 w-5" />}
-          colorClass={getRatingColor(result.ratings.disintermediationRisk.level, true)}
+          colorClass={getRiskColor(result.ratings.disintermediationRisk.level)}
+        />
+        <RatingCard 
+          title="Value Capture Risk" 
+          level={result.ratings.valueCaptureRisk.level}
+          explanation={result.ratings.valueCaptureRisk.explanation}
+          icon={<DollarSign className="h-5 w-5" />}
+          colorClass={getRiskColor(result.ratings.valueCaptureRisk.level)}
         />
       </div>
 
@@ -94,7 +106,7 @@ function RatingCard({ title, level, explanation, icon, colorClass }: {
   colorClass: string;
 }) {
   return (
-    <Card className="relative overflow-hidden shadow-md border-primary/5 hover:border-primary/20 transition-all group flex flex-col h-full">
+    <Card className="relative overflow-hidden shadow-md border-primary/5 hover:border-primary/20 transition-all group flex flex-col h-full bg-white">
       <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
         <CardDescription className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{title}</CardDescription>
         <div className="p-2 bg-primary/5 rounded-lg text-primary group-hover:bg-primary group-hover:text-white transition-colors">
@@ -103,8 +115,8 @@ function RatingCard({ title, level, explanation, icon, colorClass }: {
       </CardHeader>
       <CardContent className="space-y-4 flex-grow">
         <div className="flex items-center gap-2">
-          <Badge className={`${colorClass} font-bold px-3 py-1 rounded-md border text-xs`}>
-            {level} Rating
+          <Badge className={`${colorClass} font-bold px-3 py-1 rounded-md border text-xs shadow-sm uppercase tracking-tighter`}>
+            {level}
           </Badge>
         </div>
         <p className="text-sm text-primary/80 leading-relaxed italic border-l-2 border-accent/20 pl-3">

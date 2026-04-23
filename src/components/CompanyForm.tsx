@@ -1,4 +1,3 @@
-
 "use client"
 
 import React from 'react';
@@ -10,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { MOCK_URLS } from '@/lib/mock-data';
-import { Globe, Search } from 'lucide-react';
+import { Globe, Search, Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
   companyUrl: z.string().url("Please enter a valid URL (e.g., https://apple.com)"),
@@ -91,7 +90,12 @@ export function CompanyForm({ onSubmit, isLoading }: CompanyFormProps) {
               className="w-full h-14 text-lg bg-primary hover:bg-primary/90 text-white font-headline transition-all rounded-xl shadow-lg hover:shadow-xl active:scale-[0.98]"
               disabled={isLoading}
             >
-              {isLoading ? "Consulting AI Strategic Engine..." : "Run Ecosystem Analysis"}
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  AI Strategic Engine Analysis...
+                </span>
+              ) : "Run Ecosystem Analysis"}
             </Button>
           </form>
         </Form>
