@@ -45,7 +45,7 @@ Analyze the company located at: {{{companyUrl}}}
 Using your extensive knowledge of this company and its industry ecosystem, perform a rigorous strategic assessment using our core frameworks.
 
 1. Identify the official Company Name and Primary Industry.
-2. For each of the following 6 dimensions, provide a qualitative rating (Low, Middle, High) and a precise 2-3 sentence explanation of WHY that rating was assigned:
+2. For each of the following 6 dimensions, provide a qualitative rating (Low, Medium, or High) and a precise 2-3 sentence explanation of WHY that rating was assigned:
    - Network Effects (The power of direct and indirect value growth as the user base expands)
    - Switching Costs (The friction/cost for users to leave for a competitor)
    - Multihoming Risk (The ease with which users can use rival platforms simultaneously)

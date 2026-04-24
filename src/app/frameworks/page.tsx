@@ -6,77 +6,70 @@ import { Badge } from '@/components/ui/badge';
 import {
   Activity,
   ArrowRight,
-  Layers,
+  TrendingUp,
   Network,
-  RefreshCcw,
-  Zap,
   ShieldCheck,
-  Lightbulb,
-  Puzzle,
-  Briefcase
+  RefreshCcw,
+  Target,
+  DollarSign,
 } from 'lucide-react';
 import Link from 'next/link';
 
 const FRAMEWORKS = [
   {
-    title: "Network Effects (Direct & Indirect)",
+    title: "Platform Strength",
+    icon: <TrendingUp className="h-5 w-5" />,
+    description: "The overall resilience and defensive moat of a platform business.",
+    details: "Platform strength is a composite of network effects, switching costs, and data advantages. A strong platform creates self-reinforcing loops that make it increasingly difficult for competitors to displace it over time.",
+    category: "Strength",
+    isStrength: true,
+  },
+  {
+    title: "Network Effects",
     icon: <Network className="h-5 w-5" />,
-    description: "The phenomenon where a product or service increases in value as more people use it.",
-    details: "Direct effects occur when the value increases for the same user group (e.g., messaging). Indirect effects occur when value increases for one group as another group grows (e.g., more drivers benefiting riders).",
-    category: "Dynamics"
+    description: "A product or service increases in value as more people use it.",
+    details: "Direct effects occur when value increases within the same user group (e.g., messaging apps). Indirect effects occur when one group's growth benefits another (e.g., more drivers making the ride-hailing platform better for riders). Strong network effects create winner-take-all dynamics.",
+    category: "Strength",
+    isStrength: true,
+  },
+  {
+    title: "Switching Costs",
+    icon: <ShieldCheck className="h-5 w-5" />,
+    description: "The friction and cost a user faces when leaving a platform for a competitor.",
+    details: "Switching costs can be financial (cancellation fees), procedural (data migration), or relational (lost connections and history). High switching costs reduce churn and give platforms pricing power, even when competitors offer marginally better products.",
+    category: "Strength",
+    isStrength: true,
   },
   {
     title: "Multihoming Risk",
     icon: <RefreshCcw className="h-5 w-5" />,
-    description: "The threat posed when users or complementors can easily use multiple platforms simultaneously.",
-    details: "High multihoming risk reduces platform power and leads to commodity competition. Success requires unique value or high switching costs.",
-    category: "Risk"
-  },
-  {
-    title: "Winner-Take-All Dynamics",
-    icon: <Zap className="h-5 w-5" />,
-    description: "Markets where a single platform tends to capture the vast majority of value.",
-    details: "Driven by strong network effects, high switching costs, and low demand for niche specialization.",
-    category: "Dynamics"
-  },
-  {
-    title: "Complementor Dependence",
-    icon: <Puzzle className="h-5 w-5" />,
-    description: "The strategic risk of relying on external partners for core value delivery.",
-    details: "Essential for ecosystem growth but creates 'hold-up' risk if complementors gain too much power or switch to rivals.",
-    category: "Ecosystem"
+    description: "The threat posed when users can easily use multiple platforms simultaneously.",
+    details: "High multihoming risk reduces platform power and commoditizes competition. If both users and suppliers can freely participate in multiple ecosystems at low cost, the platform struggles to capture value. Success requires creating exclusive value or high switching costs.",
+    category: "Risk",
+    isStrength: false,
   },
   {
     title: "Disintermediation Risk",
-    icon: <ShieldCheck className="h-5 w-5" />,
-    description: "The risk that users will bypass the platform to conduct business directly.",
-    details: "Common in high-value, recurring transaction marketplaces (e.g., cleaning services). Platforms must add continuous value beyond discovery.",
-    category: "Risk"
+    icon: <Target className="h-5 w-5" />,
+    description: "The risk that users bypass the platform to transact directly with each other.",
+    details: "Common in high-value, recurring transaction marketplaces (e.g., freelancers and clients meeting via a platform, then working directly). Platforms must continuously add value beyond the initial introduction—trust signals, payments, insurance, tools—to stay relevant.",
+    category: "Risk",
+    isStrength: false,
   },
   {
-    title: "AI as a Prediction Machine",
-    icon: <Lightbulb className="h-5 w-5" />,
-    description: "Reframing AI's impact as the dramatic lowering of the cost of prediction.",
-    details: "When prediction becomes cheap, its value shifts to data (input) and judgment (human output), transforming business models.",
-    category: "Technology"
+    title: "Value Capture Risk",
+    icon: <DollarSign className="h-5 w-5" />,
+    description: "The threat that a platform cannot monetize the value it creates for users.",
+    details: "A platform can generate enormous ecosystem value while capturing very little of it. This happens when users have strong outside options, when regulation constrains monetization, or when complementors accumulate bargaining power. The key question: who appropriates the surplus?",
+    category: "Risk",
+    isStrength: false,
   },
-  {
-    title: "Make-Buy-Partner",
-    icon: <Briefcase className="h-5 w-5" />,
-    description: "The critical choice of how to acquire or build strategic capabilities.",
-    details: "Depends on strategic importance, internal capability, and the maturity of the external market ecosystem.",
-    category: "Strategy"
-  },
-  {
-    title: "Technology S-Curve",
-    icon: <Layers className="h-5 w-5" />,
-    description: "The typical trajectory of technology improvement over time.",
-    details: "Initial slow progress followed by rapid growth, eventually reaching physical or economic limits. Disruptive tech often starts on a new S-curve.",
-    category: "Technology"
-  }
 ];
 
 export default function FrameworkExplorer() {
+  const strengths = FRAMEWORKS.filter(f => f.isStrength);
+  const risks = FRAMEWORKS.filter(f => !f.isStrength);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Shared nav */}
@@ -104,36 +97,28 @@ export default function FrameworkExplorer() {
           </Badge>
           <h1 className="text-5xl font-headline font-bold text-primary">Framework Explorer</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            These concepts form the analytical core of PlatformLens, drawn from graduate-level technology strategy curricula. Use them to interpret your analysis results.
+            The six dimensions PlatformLens evaluates, drawn from graduate-level technology strategy curricula. Use these to understand your analysis results.
           </p>
         </section>
 
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {FRAMEWORKS.map((f, i) => (
-            <Card key={i} className="group hover:shadow-xl transition-all border-primary/5 hover:border-accent/30 flex flex-col">
-              <CardHeader className="space-y-4">
-                <div className="p-3 bg-primary/5 rounded-xl w-fit group-hover:bg-accent group-hover:text-white transition-colors duration-300">
-                  {f.icon}
-                </div>
-                <div>
-                  <div className="flex justify-between items-start mb-1">
-                    <CardTitle className="text-lg font-headline">{f.title}</CardTitle>
-                    <Badge variant="outline" className="text-[9px] uppercase font-bold text-muted-foreground ml-2 shrink-0">
-                      {f.category}
-                    </Badge>
-                  </div>
-                  <CardDescription className="text-primary/70 font-medium">
-                    {f.description}
-                  </CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {f.details}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Strengths */}
+        <section className="space-y-4">
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Strengths</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {strengths.map((f, i) => (
+              <FrameworkCard key={i} framework={f} />
+            ))}
+          </div>
+        </section>
+
+        {/* Risks */}
+        <section className="space-y-4">
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Risks</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {risks.map((f, i) => (
+              <FrameworkCard key={i} framework={f} />
+            ))}
+          </div>
         </section>
 
         <section className="bg-primary rounded-3xl p-10 md:p-16 text-primary-foreground space-y-8 overflow-hidden relative shadow-2xl">
@@ -155,5 +140,40 @@ export default function FrameworkExplorer() {
         </section>
       </main>
     </div>
+  );
+}
+
+function FrameworkCard({ framework }: { framework: typeof FRAMEWORKS[0] }) {
+  return (
+    <Card className="group hover:shadow-xl transition-all border-primary/5 hover:border-accent/30 flex flex-col">
+      <CardHeader className="space-y-4">
+        <div className="p-3 bg-primary/5 rounded-xl w-fit group-hover:bg-accent group-hover:text-white transition-colors duration-300">
+          {framework.icon}
+        </div>
+        <div>
+          <div className="flex justify-between items-start mb-1">
+            <CardTitle className="text-lg font-headline">{framework.title}</CardTitle>
+            <Badge
+              variant="outline"
+              className={`text-[9px] uppercase font-bold ml-2 shrink-0 ${
+                framework.isStrength
+                  ? 'text-emerald-600 border-emerald-200'
+                  : 'text-rose-600 border-rose-200'
+              }`}
+            >
+              {framework.category}
+            </Badge>
+          </div>
+          <CardDescription className="text-primary/70 font-medium">
+            {framework.description}
+          </CardDescription>
+        </div>
+      </CardHeader>
+      <CardContent className="flex-grow">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {framework.details}
+        </p>
+      </CardContent>
+    </Card>
   );
 }
