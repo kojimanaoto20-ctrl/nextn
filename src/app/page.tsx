@@ -77,13 +77,13 @@ export default function Home() {
             Platform Intelligence, Instantly
           </div>
           <h1 className="text-5xl md:text-6xl font-headline font-bold text-primary leading-tight">
-            Analyze Risk in the <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Connected Economy</span>
+            Decode Platform Power in the <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Connected Economy</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Turn any company URL into a platform strategy report. Quantify network effects, switching costs, and ecosystem risks in seconds.
+            Turn any company URL into a rigorous platform strategy report. Identify winner-take-all dynamics, revenue anchors, competitive vulnerabilities, and non-market risks — grounded in graduate-level platform economics frameworks.
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-4">
-            {["Direct Analysis", "Qualitative Insights", "Strategic Memos"].map((label) => (
+            {["8-Dimension Analysis", "WTA Market Classification", "Strategic Memos"].map((label) => (
               <span key={label} className="text-sm text-primary font-medium bg-primary/5 px-3 py-1 rounded-full border border-primary/10">
                 {label}
               </span>

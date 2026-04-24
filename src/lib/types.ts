@@ -14,12 +14,16 @@ export interface AnalysisResult {
   companyUrl: string;
   industry: string;
   ratings: {
-    networkEffects: RatingDetail;
-    switchingCosts: RatingDetail;
-    multihomingRisk: RatingDetail;
+    // Strengths
+    winnerTakeAllDynamics: RatingDetail;
+    networkEffectQuality: RatingDetail;
+    revenueAnchorClarity: RatingDetail;
+    platformInitiationMaturity: RatingDetail;
+    // Risks
+    competitiveVulnerability: RatingDetail;
+    nonMarketRisk: RatingDetail;
     disintermediationRisk: RatingDetail;
-    platformStrength: RatingDetail;
-    valueCaptureRisk: RatingDetail;
+    networkCoverSustainability: RatingDetail;
   };
   strategicMemo: string;
 }

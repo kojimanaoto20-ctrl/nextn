@@ -6,61 +6,79 @@ import { Badge } from '@/components/ui/badge';
 import {
   Activity,
   ArrowRight,
-  TrendingUp,
+  Trophy,
   Network,
-  ShieldCheck,
-  RefreshCcw,
-  Target,
   DollarSign,
+  Rocket,
+  ShieldAlert,
+  Scale,
+  ArrowRightLeft,
+  EyeOff,
 } from 'lucide-react';
 import Link from 'next/link';
 
 const FRAMEWORKS = [
   {
-    title: "Platform Strength",
-    icon: <TrendingUp className="h-5 w-5" />,
-    description: "The overall resilience and defensive moat of a platform business.",
-    details: "Platform strength is a composite of network effects, switching costs, and data advantages. A strong platform creates self-reinforcing loops that make it increasingly difficult for competitors to displace it over time.",
+    title: "Winner-Take-All Dynamics",
+    icon: <Trophy className="h-5 w-5" />,
+    description: "Assesses whether a market's structure favors consolidation around a single dominant platform.",
+    details: "Evaluated across four axes from the Uber framework: (1) Multi-homing costs — how hard is it to use rivals simultaneously? (2) Preference for standardization — do users benefit from everyone being on one platform? (3) Necessity of intermediation — is the platform essential to the transaction? (4) Dispersion of user power — are buyers and sellers fragmented? High scores indicate WTA or WTMost dynamics; low scores suggest a fragmented, no-winner market.",
     category: "Strength",
     isStrength: true,
   },
   {
-    title: "Network Effects",
+    title: "Network Effect Quality",
     icon: <Network className="h-5 w-5" />,
-    description: "A product or service increases in value as more people use it.",
-    details: "Direct effects occur when value increases within the same user group (e.g., messaging apps). Indirect effects occur when one group's growth benefits another (e.g., more drivers making the ride-hailing platform better for riders). Strong network effects create winner-take-all dynamics.",
+    description: "Evaluates the type, density, and breadth of network effects powering the platform.",
+    details: "Direct effects occur within the same user group (e.g., messaging); indirect effects occur when one side's growth benefits another (e.g., more drivers improving rider experience). High-quality network effects combine both types, have high connection density among nodes, and span multiple sides of the market. Weak or single-sided effects with sparse connections yield low ratings.",
     category: "Strength",
     isStrength: true,
   },
   {
-    title: "Switching Costs",
-    icon: <ShieldCheck className="h-5 w-5" />,
-    description: "The friction and cost a user faces when leaving a platform for a competitor.",
-    details: "Switching costs can be financial (cancellation fees), procedural (data migration), or relational (lost connections and history). High switching costs reduce churn and give platforms pricing power, even when competitors offer marginally better products.",
+    title: "Revenue Anchor Clarity",
+    icon: <DollarSign className="h-5 w-5" />,
+    description: "Identifies which platform side is the true revenue source and whether the 'Network Cover' is working.",
+    details: "From the LinkedIn framework: platforms often subsidize one side (e.g., free users consuming content) while monetizing the other (e.g., recruiters paying for access). The subsidized side's value proposition is the 'Network Cover' — a believable story that keeps them engaged. High clarity means the paying side is obvious and the cover story is credible. Low clarity signals misaligned monetization or a fragile cover narrative.",
     category: "Strength",
     isStrength: true,
   },
   {
-    title: "Multihoming Risk",
-    icon: <RefreshCcw className="h-5 w-5" />,
-    description: "The threat posed when users can easily use multiple platforms simultaneously.",
-    details: "High multihoming risk reduces platform power and commoditizes competition. If both users and suppliers can freely participate in multiple ecosystems at low cost, the platform struggles to capture value. Success requires creating exclusive value or high switching costs.",
+    title: "Platform Initiation Maturity",
+    icon: <Rocket className="h-5 w-5" />,
+    description: "Measures how far along the company is in solving the Cold Start problem and completing the Product-to-Platform transition.",
+    details: "From the Google framework: early platforms must bootstrap both sides of the market before network effects kick in. A high-maturity platform has solved the cold start problem, built a self-reinforcing flywheel, and transitioned fully from a pipeline product to a network platform. Low maturity indicates the company is still operating as a product or is in the early, fragile stages of platform growth.",
+    category: "Strength",
+    isStrength: true,
+  },
+  {
+    title: "Competitive Vulnerability",
+    icon: <ShieldAlert className="h-5 w-5" />,
+    description: "Assesses exposure to Niche Attack and Envelopment — the two primary competitive threats to established platforms.",
+    details: "From the LinkedIn framework: Niche Attack occurs when a specialized competitor captures a high-value segment (e.g., a platform for finance professionals only), peeling away premium users. Envelopment occurs when an adjacent platform bundles the incumbent's functionality into a broader offering (e.g., a tech giant adding a competing feature). High vulnerability means exposure to both vectors. Low vulnerability indicates strong defenses against specialization and bundling attacks.",
+    category: "Risk",
+    isStrength: false,
+  },
+  {
+    title: "Non-Market Risk",
+    icon: <Scale className="h-5 w-5" />,
+    description: "Evaluates governance, regulatory, and dependency risks that exist outside competitive market dynamics.",
+    details: "Three categories from the LinkedIn framework: (1) Governance risk — exposure to fraud, misinformation, or abuse by platform participants; (2) Regulatory risk — antitrust scrutiny, data privacy laws, or sector-specific rules that could constrain the business model; (3) Dependency risk — over-reliance on a single partner, supplier, or infrastructure provider (e.g., app stores, cloud providers). High scores reflect significant multi-category exposure.",
     category: "Risk",
     isStrength: false,
   },
   {
     title: "Disintermediation Risk",
-    icon: <Target className="h-5 w-5" />,
-    description: "The risk that users bypass the platform to transact directly with each other.",
-    details: "Common in high-value, recurring transaction marketplaces (e.g., freelancers and clients meeting via a platform, then working directly). Platforms must continuously add value beyond the initial introduction—trust signals, payments, insurance, tools—to stay relevant.",
+    icon: <ArrowRightLeft className="h-5 w-5" />,
+    description: "The risk that users bypass the platform to transact directly, linked to the Necessity of Intermediation axis.",
+    details: "From the Uber framework: when the platform's role in a transaction is primarily matching rather than ongoing facilitation, users may connect through the platform and then exit. High risk occurs when the platform adds little post-matching value and switching to direct transactions is low-cost. Platforms mitigate this by embedding themselves in trust, payments, insurance, or tooling — making the platform indispensable throughout the relationship lifecycle.",
     category: "Risk",
     isStrength: false,
   },
   {
-    title: "Value Capture Risk",
-    icon: <DollarSign className="h-5 w-5" />,
-    description: "The threat that a platform cannot monetize the value it creates for users.",
-    details: "A platform can generate enormous ecosystem value while capturing very little of it. This happens when users have strong outside options, when regulation constrains monetization, or when complementors accumulate bargaining power. The key question: who appropriates the surplus?",
+    title: "Network Cover Sustainability",
+    icon: <EyeOff className="h-5 w-5" />,
+    description: "Assesses whether the platform's cover story — the non-monetized value proposition for the subsidized side — remains credible.",
+    details: "From the LinkedIn framework: platforms that monetize one side must keep the other side engaged with a compelling, authentic-feeling narrative (e.g., 'professional networking,' 'learning,' 'staying connected'). High risk means the cover is eroding — users are becoming aware of their role as the product, leading to disengagement or backlash. Low risk indicates the cover story is deeply embedded in user behavior and identity, making it stable even as monetization intensifies.",
     category: "Risk",
     isStrength: false,
   },
@@ -97,14 +115,14 @@ export default function FrameworkExplorer() {
           </Badge>
           <h1 className="text-5xl font-headline font-bold text-primary">Framework Explorer</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            The six dimensions PlatformLens evaluates, drawn from graduate-level technology strategy curricula. Use these to understand your analysis results.
+            The eight dimensions PlatformLens evaluates, drawn from graduate-level platform strategy curricula covering Uber, LinkedIn, and Google case studies. Use these to understand your analysis results.
           </p>
         </section>
 
         {/* Strengths */}
         <section className="space-y-4">
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Strengths</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {strengths.map((f, i) => (
               <FrameworkCard key={i} framework={f} />
             ))}
@@ -114,7 +132,7 @@ export default function FrameworkExplorer() {
         {/* Risks */}
         <section className="space-y-4">
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Risks</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {risks.map((f, i) => (
               <FrameworkCard key={i} framework={f} />
             ))}

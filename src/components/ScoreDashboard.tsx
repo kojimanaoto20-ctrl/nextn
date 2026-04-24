@@ -5,12 +5,14 @@ import { AnalysisResult, RatingLevel } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
-  ShieldAlert,
-  TrendingUp,
-  Target,
-  ShieldCheck,
+  Trophy,
   Network,
-  DollarSign
+  DollarSign,
+  Rocket,
+  ShieldAlert,
+  Scale,
+  ArrowRightLeft,
+  EyeOff,
 } from 'lucide-react';
 import { StrategicMemo } from './StrategicMemo';
 
@@ -19,7 +21,6 @@ interface ScoreDashboardProps {
 }
 
 export function ScoreDashboard({ result }: ScoreDashboardProps) {
-  // Positive metrics: High = good (green), Low = bad (red)
   const getPositiveColor = (level: RatingLevel) => {
     switch (level) {
       case 'High': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
@@ -29,7 +30,6 @@ export function ScoreDashboard({ result }: ScoreDashboardProps) {
     }
   };
 
-  // Risk metrics: High = bad (red), Low = good (green)
   const getRiskColor = (level: RatingLevel) => {
     switch (level) {
       case 'High': return 'bg-rose-100 text-rose-700 border-rose-200';
@@ -44,27 +44,34 @@ export function ScoreDashboard({ result }: ScoreDashboardProps) {
       {/* Strengths row */}
       <div>
         <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Strengths</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <RatingCard
-            title="Platform Strength"
-            level={result.ratings.platformStrength.level}
-            explanation={result.ratings.platformStrength.explanation}
-            icon={<TrendingUp className="h-5 w-5" />}
-            colorClass={getPositiveColor(result.ratings.platformStrength.level)}
+            title="Winner-Take-All Dynamics"
+            level={result.ratings.winnerTakeAllDynamics.level}
+            explanation={result.ratings.winnerTakeAllDynamics.explanation}
+            icon={<Trophy className="h-5 w-5" />}
+            colorClass={getPositiveColor(result.ratings.winnerTakeAllDynamics.level)}
           />
           <RatingCard
-            title="Network Effects"
-            level={result.ratings.networkEffects.level}
-            explanation={result.ratings.networkEffects.explanation}
+            title="Network Effect Quality"
+            level={result.ratings.networkEffectQuality.level}
+            explanation={result.ratings.networkEffectQuality.explanation}
             icon={<Network className="h-5 w-5" />}
-            colorClass={getPositiveColor(result.ratings.networkEffects.level)}
+            colorClass={getPositiveColor(result.ratings.networkEffectQuality.level)}
           />
           <RatingCard
-            title="Switching Costs"
-            level={result.ratings.switchingCosts.level}
-            explanation={result.ratings.switchingCosts.explanation}
-            icon={<ShieldCheck className="h-5 w-5" />}
-            colorClass={getPositiveColor(result.ratings.switchingCosts.level)}
+            title="Revenue Anchor Clarity"
+            level={result.ratings.revenueAnchorClarity.level}
+            explanation={result.ratings.revenueAnchorClarity.explanation}
+            icon={<DollarSign className="h-5 w-5" />}
+            colorClass={getPositiveColor(result.ratings.revenueAnchorClarity.level)}
+          />
+          <RatingCard
+            title="Platform Initiation Maturity"
+            level={result.ratings.platformInitiationMaturity.level}
+            explanation={result.ratings.platformInitiationMaturity.explanation}
+            icon={<Rocket className="h-5 w-5" />}
+            colorClass={getPositiveColor(result.ratings.platformInitiationMaturity.level)}
           />
         </div>
       </div>
@@ -72,27 +79,34 @@ export function ScoreDashboard({ result }: ScoreDashboardProps) {
       {/* Risks row */}
       <div>
         <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Risks</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <RatingCard
-            title="Multihoming Risk"
-            level={result.ratings.multihomingRisk.level}
-            explanation={result.ratings.multihomingRisk.explanation}
+            title="Competitive Vulnerability"
+            level={result.ratings.competitiveVulnerability.level}
+            explanation={result.ratings.competitiveVulnerability.explanation}
             icon={<ShieldAlert className="h-5 w-5" />}
-            colorClass={getRiskColor(result.ratings.multihomingRisk.level)}
+            colorClass={getRiskColor(result.ratings.competitiveVulnerability.level)}
           />
           <RatingCard
-            title="Disintermediation"
+            title="Non-Market Risk"
+            level={result.ratings.nonMarketRisk.level}
+            explanation={result.ratings.nonMarketRisk.explanation}
+            icon={<Scale className="h-5 w-5" />}
+            colorClass={getRiskColor(result.ratings.nonMarketRisk.level)}
+          />
+          <RatingCard
+            title="Disintermediation Risk"
             level={result.ratings.disintermediationRisk.level}
             explanation={result.ratings.disintermediationRisk.explanation}
-            icon={<Target className="h-5 w-5" />}
+            icon={<ArrowRightLeft className="h-5 w-5" />}
             colorClass={getRiskColor(result.ratings.disintermediationRisk.level)}
           />
           <RatingCard
-            title="Value Capture Risk"
-            level={result.ratings.valueCaptureRisk.level}
-            explanation={result.ratings.valueCaptureRisk.explanation}
-            icon={<DollarSign className="h-5 w-5" />}
-            colorClass={getRiskColor(result.ratings.valueCaptureRisk.level)}
+            title="Network Cover Sustainability"
+            level={result.ratings.networkCoverSustainability.level}
+            explanation={result.ratings.networkCoverSustainability.explanation}
+            icon={<EyeOff className="h-5 w-5" />}
+            colorClass={getRiskColor(result.ratings.networkCoverSustainability.level)}
           />
         </div>
       </div>
