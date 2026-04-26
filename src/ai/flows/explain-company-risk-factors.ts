@@ -67,7 +67,7 @@ RISKS (High = severe risk):
 Important: Always output the company name in English. Use Low, Medium, or High for all ratings.
 
 3. Conclude with a Strategic Memo (200-300 words):
-   Provide an executive summary identifying the company's market type (WTA/WTMost/WTSome), the single most critical risk, and the highest-leverage opportunity for platform growth.
+   Write the memo as plain prose paragraphs only — no headers, no fields like "MEMORANDUM FOR", "FROM", "DATE", or "SUBJECT". Start directly with the analysis content. Identify the company's market type (WTA/WTMost/WTSome), the single most critical risk, and the highest-leverage opportunity for platform growth.
 
 Be insightful, analytical, and professional.`,
 });
